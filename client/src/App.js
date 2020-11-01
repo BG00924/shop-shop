@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
@@ -9,9 +9,11 @@ import NoMatch from "./pages/NoMatch";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Nav from "./components/Nav";
+import Success from "./pages/Success"
 // imports necessaries to make global state accessible to components
 import { StoreProvider } from "./utils/GlobalState"
 import OrderHistory from "./pages/OrderHistory";
+import { idbPromise } from "./utils/helpers";
 
 const client = new ApolloClient({
   request: (operation) => {
@@ -26,6 +28,7 @@ const client = new ApolloClient({
 })
 
 function App() {
+  
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -38,6 +41,7 @@ function App() {
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/orderHistory" component={OrderHistory} />
               <Route exact path="/products/:id" component={Detail} />
+              <Route exact path="/success" component={Success} />
               <Route component={NoMatch} />
             </Switch>
           </StoreProvider>

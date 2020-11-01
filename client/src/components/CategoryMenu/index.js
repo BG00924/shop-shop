@@ -5,6 +5,8 @@ import { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY} from '../../utils/actions'
 //imports our custom useStoreContext() hook
 import { useStoreContext } from "../../utils/GlobalState"
 
+import { idbPromise } from '../../utils/helpers';
+
 function CategoryMenu() {
   // const { data: categoryData } = useQuery(QUERY_CATEGORIES);
   // const categories = categoryData?.categories || [];
@@ -12,7 +14,7 @@ function CategoryMenu() {
   //3 const
   const [state, dispatch] = useStoreContext()
   const {categories} = state
-  const {data: categoryData} = useQuery(QUERY_CATEGORIES)
+  const {loading, data: categoryData} = useQuery(QUERY_CATEGORIES)
 
   //allows us to use the async useQuery to update state
   useEffect(() => {
@@ -26,8 +28,19 @@ function CategoryMenu() {
         type: UPDATE_CATEGORIES,
         categories: categoryData.categories
       })
+      // write to idb
+      categoryData.categories.forEach(category => {
+        idbPromise('categories', 'put', category);
+      });
+    } else if (!loading) {
+      idbPromise('categories', 'get').then(categories => {
+        dispatch({
+          type: UPDATE_CATEGORIES,
+          categories: categories
+        });
+      });
     }
-  }, [categoryData, dispatch])
+  }, [categoryData, loading, dispatch])
 
   // click handler to update global state instead of using function 
   // we receive as a prop from home component
