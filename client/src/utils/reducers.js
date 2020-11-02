@@ -13,10 +13,18 @@ import {
 
 //imports react hook useReducer that allows us to take in our state
 // and update it thru our reducer()
-import { useReducer } from 'react'
+// import { useReducer } from 'react'
+
+const defaultState = {
+    products: [],
+    cart: [],
+    cartOpen: false,
+    categories: [],
+    currentCategory: '',
+}
 
 // reducer function
-export const reducer = (state, action) => {
+export const reducers = (state = defaultState, action) => {
     switch (action.type) {
         // if action type value is the value of 'UPDATE_PRODUCTs,
         // return a new state object with an updated products array
@@ -103,12 +111,14 @@ export const reducer = (state, action) => {
 }
 
 //export for useReducer hook
-export function useProductReducer(initialState) {
-    return useReducer(reducer, initialState)
-}
+// export function useProductReducer(initialState) {
+//     return useReducer(reducer, initialState)
+// }
 
 //This function, useProductReducer(), will be used to help 
 //initialize our global state object and then provide us with the 
 //functionality for updating that state by automatically running 
 //it through our custom reducer() function. Think of this as a 
 //more in-depth way of using the useState() Hook we've used so much. 
+
+export default reducers

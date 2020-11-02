@@ -3,7 +3,11 @@ import CartItem from '../CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
 
-import { useStoreContext } from '../../utils/GlobalState';
+// import { useStoreContext } from '../../utils/GlobalState';
+
+// redux requirements
+import { useDispatch, useSelector } from 'react-redux'
+
 import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../utils/actions";
 import { idbPromise } from "../../utils/helpers";
 
@@ -16,7 +20,10 @@ import {loadStripe} from '@stripe/stripe-js'
 const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx')
 
 const Cart = () => {
-    const [state, dispatch] = useStoreContext()
+    // const [state, dispatch] = useStoreContext()
+
+    const dispatch = useDispatch()
+    const state = useSelector(state => state)
 
     //allows us to use a hook on an action instead of at render
     const [getCheckout, {data}] = useLazyQuery(QUERY_CHECKOUT)
@@ -87,7 +94,7 @@ const Cart = () => {
             <CartItem key={item._id} item={item} />
           ))}
           <div className="flex-row space-between">
-            <strong>Total: ${calculateTotal}</strong>
+            <strong>Total: ${calculateTotal()}</strong>
             {
               Auth.loggedIn() ?
                 <button onClick={submitCheckout}>

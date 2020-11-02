@@ -19,6 +19,9 @@ function Success() {
           idbPromise('cart', 'delete', item)
         })
       }
+      setTimeout(function() {
+        window.location="/"
+      }, 3000)
     }
     saveOrder()
   }, [addOrder])
